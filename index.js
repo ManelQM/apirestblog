@@ -20,20 +20,30 @@ app.use(cors());
 
 //Convertir body a objeto js
 
-app.use(express.json()); 
+app.use(express.json()); // Recibir datos con content-type app/json
+app.use(express.urlencoded({extended:true}));
 
-//Crear rutas
 
-app.get("/probando", (req,res) => {
+// REAL DEAL ROUTES
+
+const articleRouter = require("./routes/articleRouter"); 
+
+// ROUTES 
+
+app.use("/blog", articleRouter); 
+
+//HARDCODED ROUTES
+
+// app.get("/probando", (req,res) => {
     
-    console.log("Se ha ejecutado el endpoint de prueba"); 
+//     console.log("Se ha ejecutado el endpoint de prueba"); 
 
-    return res.status(200).send ({
-        curso: "Apirestnode",
-        estudiante: "Manel",
-        email: "manel@fakemail.com",
-    });
-});
+//     return res.status(200).send ({
+//         curso: "Apirestnode",
+//         estudiante: "Manel",
+//         email: "manel@fakemail.com",
+//     });
+// });
 
 //Crear servidor y escuchar peticiones http
 
