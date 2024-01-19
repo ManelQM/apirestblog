@@ -24,6 +24,17 @@ app.use(express.json());
 
 //Crear rutas
 
+app.get("/probando", (req,res) => {
+    
+    console.log("Se ha ejecutado el endpoint de prueba"); 
+
+    return res.status(200).send ({
+        curso: "Apirestnode",
+        estudiante: "Manel",
+        email: "manel@fakemail.com",
+    });
+});
+
 //Crear servidor y escuchar peticiones http
 
 app.listen(port,() => {
