@@ -18,5 +18,6 @@ router.get("/demoroute2", ArticleController.test2);
 //Real Deal Routes 
 
 router.post("/createArticle", ArticleController.createArticle); 
+router.get("/allarticles",ArticleController.getAllArticles);
 
 module.exports = router; 
