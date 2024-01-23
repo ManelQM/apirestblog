@@ -63,27 +63,69 @@ const createArticle = async (req, res) => {
 
 // GET ALL ARTICLES
 
-const getAllArticles = async (req, res) => {
 
-  let allArticlesreq = Article.find({}).exec((error,articles) => {
-    if(error || !articles) {
+
+const getAllArticles = async (req, res) => {
+  try {
+    let allArticles = await Article.find({}).exec();
+
+    if (!allArticles || allArticles.length === 0) {
       return res.status(404).json({
         status: "error",
-        message: "Cant find articles",
+        message: "Can't find articles",
       });
-    }; 
+    }
 
     return res.status(200).json({
       status: "success",
-      articles,
+      articles: allArticles,
     });
-  });
+  } catch (error) {
+    return res.status(500).json({
+      status: "error",
+      message: "Internal server error",
+    });
+  }
+};
 
+// GET ONLY ONE SPECIFIC ARTICLE
+
+const getOneArticle = async (req,res) => {
+  
+  try {
+         let id= req.params.id; 
+
+         const oneArticle = await Article.findById(id);
+
+         if(!oneArticle) {
+
+          return res.status(404).json({
+            status: "error",
+            message: "Cant find the article",
+          });
+         }; 
+
+         return res.status(200).json({
+          status: "success",
+          oneArticle
+         })
+  } catch (error) {
+
+    return res.status(500).json({
+      status: "error",
+      message: "Internal server error"
+    })
+  }
 }
+
+
+
+
 
 module.exports = {
     test,
     test2,
     createArticle,
     getAllArticles,
+    getOneArticle,
   };
