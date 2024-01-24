@@ -176,6 +176,24 @@ const updateArticle = async (req, res) => {
   }
 };
 
+const uploadImage = (req,res) => {
+
+// Configurar Multer
+
+// Recoger el fichero de imagen subido 
+
+// Nombre del archivo
+
+// Extensión del archivo
+
+// Comprobar extension correcta 
+
+// Actualizar 
+
+// Devolver respuesta 
+
+}
+
 module.exports = {
   test,
   test2,
@@ -184,4 +202,5 @@ module.exports = {
   getOneArticle,
   deleteArticle,
   updateArticle,
+  uploadImage,
 };
