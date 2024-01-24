@@ -1,5 +1,6 @@
-const {validate} = require("../services/validate");
+const { validate } = require("../services/validate");
 const Article = require("../models/Article");
+
 //TEST CONTROLLERS
 
 const test = (req, res) => {
@@ -16,22 +17,15 @@ const test2 = (req, res) => {
   });
 };
 
-//CREATE ARTICLE
+//CREATE ARTICLE CONTROLLER
 
 const createArticle = async (req, res) => {
-  // RECOGER PARAMETROS POR BODY
+  // Body params
   let newArticleParams = req.body;
 
-  // VALIDAR DATOS
+  // Validate data
   try {
-    let validateTitle =
-      !validator.isEmpty(newArticleParams.title) &&
-      validator.isLength(newArticleParams.title, { min: 5, max: undefined });
-    let validateContent = !validator.isEmpty(newArticleParams.content);
-
-    if (!validateTitle || !validateContent) {
-      throw new Error("Please try again, article not validated!!");
-    }
+    validate(res, newArticleParams);
   } catch (error) {
     return res.status(400).json({
       status: "error",
@@ -39,10 +33,10 @@ const createArticle = async (req, res) => {
     });
   }
 
-  // CREAR OBJETO
+  // Create object
   const article = new Article(newArticleParams);
 
-  // GUARDAR EN BD
+  // Save in Data Base
   try {
     const savedArticle = await article.save();
 
@@ -59,7 +53,7 @@ const createArticle = async (req, res) => {
   }
 };
 
-// GET ALL ARTICLES
+// GET ALL ARTICLES CONTROLLER
 
 const getAllArticles = async (req, res) => {
   try {
@@ -84,7 +78,7 @@ const getAllArticles = async (req, res) => {
   }
 };
 
-// GET ONLY ONE SPECIFIC ARTICLE
+// GET ONLY ONE SPECIFIC ARTICLE CONTROLLER
 
 const getOneArticle = async (req, res) => {
   try {
@@ -111,6 +105,8 @@ const getOneArticle = async (req, res) => {
   }
 };
 
+// DELETE ARTICLE CONTROLLER
+
 const deleteArticle = async (req, res) => {
   try {
     let id = req.params.id;
@@ -136,18 +132,16 @@ const deleteArticle = async (req, res) => {
   }
 };
 
-
+// UPDATE ARTICLE CONTROLLER
 
 const updateArticle = async (req, res) => {
   let id = req.params.id;
   let update = req.body;
 
-  //VALIDATE
+  // Validate
 
   try {
-    
     validate(res, update);
-
   } catch (error) {
     return res.status(400).json({
       status: "error",
@@ -155,12 +149,12 @@ const updateArticle = async (req, res) => {
     });
   }
 
-  // SEARCH AND UPDATE ARTICLE
+  // Search and update article
   try {
     const updatedArticle = await Article.findOneAndUpdate(
       { _id: id },
       update,
-      { new: true } // THIS OPTION RETURNS THE MODIFIED DOCUMENT RATHER THAN THE ORIGINAL BEFORE UPDATING
+      { new: true } // THIS OPTION RETURNS THE MODIFIED DOCUMENT RATHER THAN THE ORIGINAL BEFORE UPDATING!!!!
     );
 
     if (!updatedArticle) {
