@@ -1,4 +1,4 @@
-const validator = require("validator");
+const {validate} = require("../services/validate");
 const Article = require("../models/Article");
 //TEST CONTROLLERS
 
@@ -136,19 +136,18 @@ const deleteArticle = async (req, res) => {
   }
 };
 
+
+
 const updateArticle = async (req, res) => {
   let id = req.params.id;
   let update = req.body;
 
-  try {
-    let validateTitle =
-      !validator.isEmpty(update.title) &&
-      validator.isLength(update.title, { min: 5, max: undefined });
-    let validateContent = !validator.isEmpty(update.content);
+  //VALIDATE
 
-    if (!validateTitle || !validateContent) {
-      throw new Error("Please try again, article not validated!!");
-    }
+  try {
+    
+    validate(res, update);
+
   } catch (error) {
     return res.status(400).json({
       status: "error",
