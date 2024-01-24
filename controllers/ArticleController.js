@@ -19,7 +19,6 @@ const test2 = (req, res) => {
 //CREATE ARTICLE
 
 const createArticle = async (req, res) => {
- 
   // RECOGER PARAMETROS POR BODY
   let newArticleParams = req.body;
 
@@ -112,36 +111,118 @@ const getOneArticle = async (req, res) => {
   }
 };
 
-const deleteArticle = async (req,res) => {
-
+const deleteArticle = async (req, res) => {
   try {
-    
-    let toDelete = req.params.id; 
-    const deleteArticle = await Article.findOneAndDelete(toDelete);
+    let id = req.params.id;
+    const deleteArticle = await Article.findOneAndDelete(id);
 
-    if(!deleteArticle) {
-
+    if (!deleteArticle) {
       return res.status(404).json({
         status: "error",
-        message: "Cant find the article", 
-      })
+        message: "Cant find the article",
+      });
     }
 
     return res.status(200).json({
       status: "success",
       deleteArticle,
-      message: "Article deleted"
-    })
-
-  } catch(error) {
-
+      message: "Article deleted",
+    });
+  } catch (error) {
     return res.status(500).json({
       status: "error",
-      message: "Internal server error", 
-    })
-
+      message: "Internal server error",
+    });
   }
-}
+};
+
+// const updateArticle = async (req,res) => {
+
+//   let id = req.params.id;
+
+//   let update = req.body;
+
+//   try{
+
+//     let validateTitle =
+//     !validator.isEmpty(update.title) &&
+//     validator.isLength(update.title, { min: 5, max: undefined });
+//   let validateContent = !validator.isEmpty(update.content);
+
+//   if (!validateTitle || !validateContent) {
+//     throw new Error("Please try again, article not validated!!");
+//   }
+// } catch (error) {
+//   return res.status(400).json({
+//     status: "error",
+//     message: "Please complete the required fields",
+//   });
+// }
+
+// // SEARCH AND UPDATE ARTICLE
+// await Article.findOneAndUpdate({id:id}, req.body (error,update) => {
+//  if (error||!update) {
+//   return res.status(500).json({
+//     status: "error",
+//     message: "Cant find the article"
+
+//   })
+
+//  }
+//   return res.status(200).json({
+//     status: "succes",
+//     article: update,
+//   })
+// })
+
+// }
+
+const updateArticle = async (req, res) => {
+  let id = req.params.id;
+  let update = req.body;
+
+  try {
+    let validateTitle =
+      !validator.isEmpty(update.title) &&
+      validator.isLength(update.title, { min: 5, max: undefined });
+    let validateContent = !validator.isEmpty(update.content);
+
+    if (!validateTitle || !validateContent) {
+      throw new Error("Please try again, article not validated!!");
+    }
+  } catch (error) {
+    return res.status(400).json({
+      status: "error",
+      message: "Please complete the required fields",
+    });
+  }
+
+  // SEARCH AND UPDATE ARTICLE
+  try {
+    const updatedArticle = await Article.findOneAndUpdate(
+      { _id: id },
+      update,
+      { new: true } // THIS OPTION RETURNS THE MODIFIED DOCUMENT RATHER THAN THE ORIGINAL BEFORE UPDATING
+    );
+
+    if (!updatedArticle) {
+      return res.status(404).json({
+        status: "error",
+        message: "Can't find the article",
+      });
+    }
+
+    return res.status(200).json({
+      status: "success",
+      article: updatedArticle,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      status: "error",
+      message: "Internal server error",
+    });
+  }
+};
 
 module.exports = {
   test,
@@ -149,5 +230,6 @@ module.exports = {
   createArticle,
   getAllArticles,
   getOneArticle,
-  deleteArticle, 
+  deleteArticle,
+  updateArticle,
 };
