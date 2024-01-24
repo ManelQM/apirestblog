@@ -136,47 +136,6 @@ const deleteArticle = async (req, res) => {
   }
 };
 
-// const updateArticle = async (req,res) => {
-
-//   let id = req.params.id;
-
-//   let update = req.body;
-
-//   try{
-
-//     let validateTitle =
-//     !validator.isEmpty(update.title) &&
-//     validator.isLength(update.title, { min: 5, max: undefined });
-//   let validateContent = !validator.isEmpty(update.content);
-
-//   if (!validateTitle || !validateContent) {
-//     throw new Error("Please try again, article not validated!!");
-//   }
-// } catch (error) {
-//   return res.status(400).json({
-//     status: "error",
-//     message: "Please complete the required fields",
-//   });
-// }
-
-// // SEARCH AND UPDATE ARTICLE
-// await Article.findOneAndUpdate({id:id}, req.body (error,update) => {
-//  if (error||!update) {
-//   return res.status(500).json({
-//     status: "error",
-//     message: "Cant find the article"
-
-//   })
-
-//  }
-//   return res.status(200).json({
-//     status: "succes",
-//     article: update,
-//   })
-// })
-
-// }
-
 const updateArticle = async (req, res) => {
   let id = req.params.id;
   let update = req.body;

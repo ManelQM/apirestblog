@@ -21,6 +21,6 @@ router.post("/createarticle", ArticleController.createArticle);
 router.get("/allarticles",ArticleController.getAllArticles);
 router.get("/onearticle/:id",ArticleController.getOneArticle);
 router.delete("/deletearticle/:id",ArticleController.deleteArticle);
-router.put("updatearticle/:id",ArticleController.updateArticle); 
+router.put("/updatearticle/:id",ArticleController.updateArticle); 
 
 module.exports = router; 
