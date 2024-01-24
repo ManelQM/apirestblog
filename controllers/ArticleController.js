@@ -1,14 +1,12 @@
-const validator = require("validator"); 
+const validator = require("validator");
 const Article = require("../models/Article");
-//TEST CONTROLLERS 
+//TEST CONTROLLERS
 
 const test = (req, res) => {
   return res.status(200).json({
     mensaje: "Esto es un mensaje de prueba",
   });
 };
-
-
 
 const test2 = (req, res) => {
   return res.status(200).json({
@@ -18,10 +16,11 @@ const test2 = (req, res) => {
   });
 };
 
-//REAL CONTROLLERS 
+//CREATE ARTICLE
 
 const createArticle = async (req, res) => {
-  // RECOGER PARAMETROS POR POST 
+ 
+  // RECOGER PARAMETROS POR BODY
   let newArticleParams = req.body;
 
   // VALIDAR DATOS
@@ -39,7 +38,7 @@ const createArticle = async (req, res) => {
       status: "error",
       message: "Please complete the required fields",
     });
-  }; 
+  }
 
   // CREAR OBJETO
   const article = new Article(newArticleParams);
@@ -47,7 +46,7 @@ const createArticle = async (req, res) => {
   // GUARDAR EN BD
   try {
     const savedArticle = await article.save();
-    
+
     return res.status(200).json({
       status: "success",
       article: savedArticle,
@@ -58,12 +57,10 @@ const createArticle = async (req, res) => {
       status: "error",
       message: "Can't save the article",
     });
-  };
+  }
 };
 
 // GET ALL ARTICLES
-
-
 
 const getAllArticles = async (req, res) => {
   try {
@@ -90,42 +87,67 @@ const getAllArticles = async (req, res) => {
 
 // GET ONLY ONE SPECIFIC ARTICLE
 
-const getOneArticle = async (req,res) => {
-  
+const getOneArticle = async (req, res) => {
   try {
-         let id= req.params.id; 
+    let id = req.params.id;
 
-         const oneArticle = await Article.findById(id);
+    const oneArticle = await Article.findById(id);
 
-         if(!oneArticle) {
+    if (!oneArticle) {
+      return res.status(404).json({
+        status: "error",
+        message: "Cant find the article",
+      });
+    }
 
-          return res.status(404).json({
-            status: "error",
-            message: "Cant find the article",
-          });
-         }; 
-
-         return res.status(200).json({
-          status: "success",
-          oneArticle
-         })
+    return res.status(200).json({
+      status: "success",
+      oneArticle,
+    });
   } catch (error) {
+    return res.status(500).json({
+      status: "error",
+      message: "Internal server error",
+    });
+  }
+};
+
+const deleteArticle = async (req,res) => {
+
+  try {
+    
+    let toDelete = req.params.id; 
+    const deleteArticle = await Article.findOneAndDelete(toDelete);
+
+    if(!deleteArticle) {
+
+      return res.status(404).json({
+        status: "error",
+        message: "Cant find the article", 
+      })
+    }
+
+    return res.status(200).json({
+      status: "success",
+      deleteArticle,
+      message: "Article deleted"
+    })
+
+  } catch(error) {
 
     return res.status(500).json({
       status: "error",
-      message: "Internal server error"
+      message: "Internal server error", 
     })
+
   }
 }
 
-
-
-
-
 module.exports = {
-    test,
-    test2,
-    createArticle,
-    getAllArticles,
-    getOneArticle,
-  };
+  test,
+  test2,
+  createArticle,
+  getAllArticles,
+  getOneArticle,
+  deleteArticle, 
+};

@@ -20,5 +20,6 @@ router.get("/demoroute2", ArticleController.test2);
 router.post("/createArticle", ArticleController.createArticle); 
 router.get("/allarticles",ArticleController.getAllArticles);
 router.get("/onearticle/:id",ArticleController.getOneArticle);
+router.delete("/deletearticle/:id",ArticleController.deleteArticle);
 
 module.exports = router; 
