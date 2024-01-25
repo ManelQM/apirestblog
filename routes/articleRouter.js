@@ -4,29 +4,24 @@
 
 const express = require("express");
 const router = express.Router();
-const multer = require("multer"); // MIDDLEWARE 
+const multer = require("multer"); // MIDDLEWARE
 const ArticleController = require("../controllers/ArticleController"); // Cargamos controlador
 
-const imageStorage = multer.diskStorage({  // Configuramos Multer
+const imageStorage = multer.diskStorage({
+  // Configuramos Multer
 
-    // Dos metodos de multer 
-    // con cb indicamos donde está el directorio
+  // Dos metodos de multer
+  // con cb indicamos donde está el directorio
 
-    destination: function (req, file, cb){
+  destination: function (req, file, cb) {
+    cb(null, "./imagenes/articulos");
+  },
+  filename: function (req, file, cb) {
+    cb(null, "articulo" + Date.now() + file.originalname);
+  },
+});
 
-        cb(null, "./imagenes/articulos");
-
-    },
-    filename: function (req, file, cb) {
-
-        cb(null, "articulo" + Date.now() + file.originalname);
-
-    }
-})
-
-const uploads = multer({storage: imageStorage}); 
-
-
+const uploads = multer({ storage: imageStorage });
 
 // Demo Routes
 
@@ -41,8 +36,7 @@ router.get("/onearticle/:id", ArticleController.getOneArticle);
 router.delete("/deletearticle/:id", ArticleController.deleteArticle);
 router.put("/updatearticle/:id", ArticleController.updateArticle);
 router.post("/uploadimage/:id", [uploads.single("file0")],ArticleController.uploadImage); //Single es el método para subir un único archivo
-router.get("/getoneimage/:img",ArticleController.getOneImg); 
-
-
+router.get("/getoneimage/:img", ArticleController.getOneImg);
+router.get("/search/:search", ArticleController.search);
 
 module.exports = router;

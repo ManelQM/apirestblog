@@ -245,6 +245,7 @@ const uploadImage = async (req, res) => {
   }
 };
 
+// GET ONE IMAGE AND SHOW CONTROLLER
 
 const getOneImg = async (req,res) => {
 
@@ -279,6 +280,38 @@ const getOneImg = async (req,res) => {
 
 }
 
+// SEARCH CONTROLLER 
+
+const search  = async (req, res) => {
+
+try {
+
+  //Sacar el string de busqueda
+
+  let search = req.params.search; 
+
+  // Find OR
+
+  await Article.find({"$or": [
+    
+    {"title": {"$regex": search, "options": "i", }},    
+    {"content" : {"$regex": search, "options": "i"}},
+  ]})
+
+  // Orden
+
+  // Ejecutar consulta
+
+  // Devolver resultado
+
+
+}catch(error) {
+
+
+}
+
+}
+
 module.exports = {
   test,
   test2,
@@ -289,4 +322,5 @@ module.exports = {
   updateArticle,
   uploadImage,
   getOneImg,
+  search, 
 };
