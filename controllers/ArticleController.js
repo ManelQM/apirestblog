@@ -1,4 +1,5 @@
 const { validate } = require("../services/validate");
+const fs = require("fs"); 
 const Article = require("../models/Article");
 
 //TEST CONTROLLERS
@@ -64,7 +65,7 @@ const getAllArticles = async (req, res) => {
         status: "error",
         message: "Can't find articles",
       });
-    }
+    };
 
     return res.status(200).json({
       status: "success",
@@ -75,7 +76,7 @@ const getAllArticles = async (req, res) => {
       status: "error",
       message: "Internal server error",
     });
-  }
+  };
 };
 
 // GET ONLY ONE SPECIFIC ARTICLE CONTROLLER
@@ -91,7 +92,7 @@ const getOneArticle = async (req, res) => {
         status: "error",
         message: "Cant find the article",
       });
-    }
+    };
 
     return res.status(200).json({
       status: "success",
@@ -102,7 +103,7 @@ const getOneArticle = async (req, res) => {
       status: "error",
       message: "Internal server error",
     });
-  }
+  };
 };
 
 // DELETE ARTICLE CONTROLLER
@@ -117,7 +118,7 @@ const deleteArticle = async (req, res) => {
         status: "error",
         message: "Cant find the article",
       });
-    }
+    };
 
     return res.status(200).json({
       status: "success",
@@ -129,7 +130,7 @@ const deleteArticle = async (req, res) => {
       status: "error",
       message: "Internal server error",
     });
-  }
+  };
 };
 
 // UPDATE ARTICLE CONTROLLER
@@ -147,7 +148,7 @@ const updateArticle = async (req, res) => {
       status: "error",
       message: "Please complete the required fields",
     });
-  }
+  };
 
   // Search and update article
   try {
@@ -162,7 +163,7 @@ const updateArticle = async (req, res) => {
         status: "error",
         message: "Can't find the article",
       });
-    }
+    };
 
     return res.status(200).json({
       status: "success",
@@ -173,7 +174,7 @@ const updateArticle = async (req, res) => {
       status: "error",
       message: "Internal server error",
     });
-  }
+  };
 };
 
 const uploadImage = (req,res) => {
@@ -181,24 +182,43 @@ const uploadImage = (req,res) => {
 // Configurar Multer
 
 // Recoger el fichero de imagen subido 
-console.log(req.file); 
+if(!req.file) {
+  return res.status(404).json({
+    status: "error",
+    message: "Please, choose a file to upload your image"
+  });
+}
 // Nombre del archivo
+
+let fileName = req.file.originalname; 
 
 // Extensión del archivo
 
+let fileNameSplit = fileName.split("\.");
 // Comprobar extension correcta 
-
+let fileExtension = fileNameSplit[1];
 // Actualizar 
+if (fileExtension != "png" 
+    && fileExtension != "jpg" 
+    && fileExtension != "jpeg" 
+    && fileExtension != "gift") {
 
-// Devolver respuesta 
+      fs.unlink(req.file.path, (error) => {
+        return res.status(400).json({
+          status : "error",
+          message: "Invalid file format",
+        })
+      })
+    }else {  // Devolver respuesta a través de un else ya que si lo pusiera simplemente detras del if node devuelve error. 
+      return res.status(200).json({
+        status: "success",
+        files: req.file, 
+        fileNameSplit,
+        message: "Uploaded File"
+      });
+    }
 
-return res.status(200).json({
-  status: "success",
-  files: req.file, 
-  message: "Uploaded File"
-})
-
-}
+};
 
 module.exports = {
   test,
