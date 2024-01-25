@@ -181,7 +181,7 @@ const uploadImage = (req,res) => {
 // Configurar Multer
 
 // Recoger el fichero de imagen subido 
-
+console.log(req.file); 
 // Nombre del archivo
 
 // Extensión del archivo
@@ -191,6 +191,12 @@ const uploadImage = (req,res) => {
 // Actualizar 
 
 // Devolver respuesta 
+
+return res.status(200).json({
+  status: "success",
+  files: req.file, 
+  message: "Uploaded File"
+})
 
 }
 

@@ -40,6 +40,6 @@ router.get("/allarticles", ArticleController.getAllArticles);
 router.get("/onearticle/:id", ArticleController.getOneArticle);
 router.delete("/deletearticle/:id", ArticleController.deleteArticle);
 router.put("/updatearticle/:id", ArticleController.updateArticle);
-router.post("/uploadimage/:id", [uploads.single("File0")],ArticleController.uploadImage);
+router.post("/uploadimage/:id", [uploads.single("file0")],ArticleController.uploadImage); //Single es el método para subir un único archivo
 
 module.exports = router;
