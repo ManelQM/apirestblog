@@ -1,5 +1,6 @@
 const { validate } = require("../services/validate");
 const fs = require("fs");
+const path = require("path")
 const Article = require("../models/Article");
 
 //TEST CONTROLLERS
@@ -244,6 +245,40 @@ const uploadImage = async (req, res) => {
   }
 };
 
+
+const getOneImg = async (req,res) => {
+
+  try {
+
+    let file = req.params.img
+    // console.log(req.params, "la request por params")
+
+    let fileRoute = "./imagenes/articulos/" + file; 
+    // console.log(fileRoute, "fileROute")
+    fs.stat(fileRoute, (error,existe) => {
+      if(existe) {
+        return res.sendFile(path.resolve(fileRoute)) // sendFile es un metodo de node para enviar archivos dentro del fs, necesitamos importar libreria PATH
+      } else {
+        return res.status(404).json({
+          status: "error",
+          message: "File dont exists or its not uploaded",
+          existe,
+          file,
+          fileRoute, 
+        })
+      }
+    })
+
+  } catch(error) {
+
+    return res.status(400).json({
+      status: "error",
+      message: "Internal Server Error"
+    })
+  }
+
+}
+
 module.exports = {
   test,
   test2,
@@ -253,4 +288,5 @@ module.exports = {
   deleteArticle,
   updateArticle,
   uploadImage,
+  getOneImg,
 };
