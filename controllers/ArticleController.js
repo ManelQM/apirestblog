@@ -1,5 +1,5 @@
 const { validate } = require("../services/validate");
-const fs = require("fs"); 
+const fs = require("fs");
 const Article = require("../models/Article");
 
 //TEST CONTROLLERS
@@ -65,7 +65,7 @@ const getAllArticles = async (req, res) => {
         status: "error",
         message: "Can't find articles",
       });
-    };
+    }
 
     return res.status(200).json({
       status: "success",
@@ -76,10 +76,10 @@ const getAllArticles = async (req, res) => {
       status: "error",
       message: "Internal server error",
     });
-  };
+  }
 };
 
-// GET ONLY ONE SPECIFIC ARTICLE CONTROLLER
+// GET ONE SPECIFIC ARTICLE CONTROLLER
 
 const getOneArticle = async (req, res) => {
   try {
@@ -92,7 +92,7 @@ const getOneArticle = async (req, res) => {
         status: "error",
         message: "Cant find the article",
       });
-    };
+    }
 
     return res.status(200).json({
       status: "success",
@@ -103,7 +103,7 @@ const getOneArticle = async (req, res) => {
       status: "error",
       message: "Internal server error",
     });
-  };
+  }
 };
 
 // DELETE ARTICLE CONTROLLER
@@ -118,7 +118,7 @@ const deleteArticle = async (req, res) => {
         status: "error",
         message: "Cant find the article",
       });
-    };
+    }
 
     return res.status(200).json({
       status: "success",
@@ -130,7 +130,7 @@ const deleteArticle = async (req, res) => {
       status: "error",
       message: "Internal server error",
     });
-  };
+  }
 };
 
 // UPDATE ARTICLE CONTROLLER
@@ -148,7 +148,7 @@ const updateArticle = async (req, res) => {
       status: "error",
       message: "Please complete the required fields",
     });
-  };
+  }
 
   // Search and update article
   try {
@@ -163,7 +163,7 @@ const updateArticle = async (req, res) => {
         status: "error",
         message: "Can't find the article",
       });
-    };
+    }
 
     return res.status(200).json({
       status: "success",
@@ -174,50 +174,74 @@ const updateArticle = async (req, res) => {
       status: "error",
       message: "Internal server error",
     });
-  };
+  }
 };
 
-const uploadImage = (req,res) => {
+// UPLOAD IMAGE CONTROLLER
 
-// Configurar Multer
+const uploadImage = async (req, res) => {
+  // Configurar Multer en articleRouter.js
 
-// Recoger el fichero de imagen subido 
-if(!req.file) {
-  return res.status(404).json({
-    status: "error",
-    message: "Please, choose a file to upload your image"
-  });
-}
-// Nombre del archivo
+  // Recoger el fichero de imagen subido
+  if (!req.file) {
+    return res.status(404).json({
+      status: "error",
+      message: "Please, choose a file to upload your image",
+    });
+  }
+  // Nombre del archivo
 
-let fileName = req.file.originalname; 
+  let fileName = req.file.originalname;
 
-// Extensión del archivo
+  // Extensión del archivo
 
-let fileNameSplit = fileName.split("\.");
-// Comprobar extension correcta 
-let fileExtension = fileNameSplit[1];
-// Actualizar 
-if (fileExtension != "png" 
-    && fileExtension != "jpg" 
-    && fileExtension != "jpeg" 
-    && fileExtension != "gift") {
+  let fileNameSplit = fileName.split(".");
+  // Comprobar extension correcta
+  let fileExtension = fileNameSplit[1];
+  // Actualizar
+  if (
+    fileExtension != "png" &&
+    fileExtension != "jpg" &&
+    fileExtension != "jpeg" &&
+    fileExtension != "gift"
+  ) {
+    fs.unlink(req.file.path, (error) => {
+      return res.status(400).json({
+        status: "error",
+        message: "Invalid file format",
+      });
+    });
+  } else {
+    // Devolver respuesta a través de un else ya que si lo pusiera simplemente detras del if node devuelve error.
 
-      fs.unlink(req.file.path, (error) => {
-        return res.status(400).json({
-          status : "error",
-          message: "Invalid file format",
-        })
-      })
-    }else {  // Devolver respuesta a través de un else ya que si lo pusiera simplemente detras del if node devuelve error. 
+    let id = req.params.id;
+
+    try {
+      const updatedArticle = await Article.findOneAndUpdate(
+        { _id: id },
+        { img: req.file.filename },
+        { new: true }
+      );
+
+      if (!updatedArticle) {
+        return res.status(404).json({
+          status: "error",
+          messasge: "Cant find the article",
+        });
+      }
+      // Response del artículo actualizado 
       return res.status(200).json({
         status: "success",
-        files: req.file, 
-        fileNameSplit,
-        message: "Uploaded File"
+        article: updatedArticle,
+        files: req.file,
+      });
+    } catch (error) {
+      return res.status(400).json({
+        status: "error",
+        message: "Internal Server Error, cant update article image",
       });
     }
-
+  }
 };
 
 module.exports = {
