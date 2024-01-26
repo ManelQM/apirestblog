@@ -282,35 +282,41 @@ const getOneImg = async (req,res) => {
 
 // SEARCH CONTROLLER 
 
-const search  = async (req, res) => {
+const search = async (req, res) => {
+  try {
+    // Sacar el string de búsqueda
+    let searchString = req.params.search;
 
-try {
+    // Find OR
+    const findedArticles = await Article.find({
+      $or: [
+        { title: { $regex: searchString, $options: "i" } },
+        { content: { $regex: searchString, $options: "i" } },
+      ],
+    }).sort({ date: -1 });
 
-  //Sacar el string de busqueda
+    if (!findedArticles || findedArticles.length === 0) {
+      return res.status(404).json({
+        status: "error",
+        message: "Can't find any articles",
+      });
+    }
 
-  let search = req.params.search; 
-
-  // Find OR
-
-  await Article.find({"$or": [
-    
-    {"title": {"$regex": search, "options": "i", }},    
-    {"content" : {"$regex": search, "options": "i"}},
-  ]})
-
-  // Orden
-
-  // Ejecutar consulta
-
-  // Devolver resultado
+    // Devolver resultado
+    return res.status(200).json({
+      status: "success",
+      articles: findedArticles,
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      status: "error",
+      message: "Internal server error",
+    });
+  }
+};
 
 
-}catch(error) {
-
-
-}
-
-}
 
 module.exports = {
   test,
