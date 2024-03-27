@@ -40,3 +40,5 @@ router.get("/getoneimage/:img", ArticleController.getOneImg);
 router.get("/search/:search", ArticleController.search);
 
 module.exports = router;
+
+

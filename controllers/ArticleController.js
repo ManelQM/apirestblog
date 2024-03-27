@@ -301,7 +301,6 @@ const search = async (req, res) => {
         message: "Can't find any articles",
       });
     }
-
     // Devolver resultado
     return res.status(200).json({
       status: "success",
@@ -315,9 +314,7 @@ const search = async (req, res) => {
     });
   }
 };
-
-
-
+ 
 module.exports = {
   test,
   test2,
