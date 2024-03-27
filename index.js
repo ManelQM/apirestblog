@@ -13,7 +13,7 @@ server();
 //Crear servidor Node
 
 const app = express(); 
-const port = 3900; 
+const PORT = process.env.PORT || 3900; 
 
 //Configurar Cors 
 app.use(cors()); 
@@ -47,6 +47,6 @@ app.use("/blog", articleRouter);
 
 //Crear servidor y escuchar peticiones http
 
-app.listen(port,() => {
-    console.log(`Cyberia is running at port:${port}`); 
+app.listen(PORT,() => {
+    console.log(`Cyberia is running at PORT:${PORT}`); 
 })

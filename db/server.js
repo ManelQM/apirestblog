@@ -1,7 +1,7 @@
 const mongoose = require("mongoose"); 
 const server  =  async() => {
     try{
-        await mongoose.connect("mongodb://localhost:27017/my_blog");
+        await mongoose.connect("mongodb://apirestblog-production-3622.up.railway.app");
         console.log("Welcome to the database, have fun!")
     }catch(error) {
         console.log(error);
