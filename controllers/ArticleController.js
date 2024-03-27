@@ -48,6 +48,7 @@ const createArticle = async (req, res) => {
       message: "Article created and saved",
     });
   } catch (error) {
+    console.error("error saving article",error);
     return res.status(400).json({
       status: "error",
       message: "Can't save the article",

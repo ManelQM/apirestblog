@@ -18,7 +18,6 @@ const ArticleSchema = Schema({
     },
     img: {
         type: String,
-        require: true,
         default: "default.png" // En el caso de que no llegara la img aparecería default.png
     }, 
 })
