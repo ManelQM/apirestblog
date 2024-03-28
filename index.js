@@ -34,16 +34,16 @@ app.use("/blog", articleRouter);
 
 //HARDCODED ROUTES
 
-// app.get("/probando", (req,res) => {
+app.get("/", (req,res) => {
     
-//     console.log("Se ha ejecutado el endpoint de prueba"); 
+    console.log("Se ha ejecutado el endpoint de prueba"); 
 
-//     return res.status(200).send ({
-//         curso: "Apirestnode",
-//         estudiante: "Manel",
-//         email: "manel@fakemail.com",
-//     });
-// });
+    return res.status(200).send ({
+        curso: "Apirestnode",
+        estudiante: "Manel",
+        email: "manel@fakemail.com",
+    });
+});
 
 //Crear servidor y escuchar peticiones http
 
