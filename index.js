@@ -1,6 +1,7 @@
 const {server} = require("./db/server"); 
 const express = require("express");
 const cors = require("cors");
+const dotenv = require("dotenv");
 
 //Inicializar app
 

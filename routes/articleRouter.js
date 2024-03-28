@@ -1,7 +1,6 @@
 // CREAMOS LA RUTA CON EXPRESS QUE ES PARA LO QUE UTILIZAMOS ESTE FRAMEWORK
 // const {Router} = require("express");
 // ESTO SERIA IGUAL A ESTO
-
 const express = require("express");
 const router = express.Router();
 const multer = require("multer"); // MIDDLEWARE
