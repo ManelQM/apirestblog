@@ -1,7 +1,6 @@
 const {server} = require("./db/server"); 
 const express = require("express");
 const cors = require("cors");
-const dotenv = require("dotenv");
 
 //Inicializar app
 
@@ -14,7 +13,7 @@ server();
 //Crear servidor Node
 
 const app = express(); 
-const PORT = process.env.PORT 
+const PORT = process.env.PORT || 3668
 
 //Configurar Cors 
 app.use(cors()); 
