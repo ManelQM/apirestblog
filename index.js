@@ -39,7 +39,7 @@ app.get("/", (req,res) => {
     console.log("Se ha ejecutado el endpoint de prueba"); 
 
     return res.status(200).send ({
-        curso: "Apirestnode",
+        app: "Apirestnode",
         estudiante: "Manel",
         email: "manel@fakemail.com",
     });
