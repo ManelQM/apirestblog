@@ -47,6 +47,6 @@ app.get("/", (req,res) => {
 
 //Crear servidor y escuchar peticiones http
 
-app.listen(PORT,"0.0.0.0",() => {
+app.listen(PORT,() => {
     console.log(`Cyberia is running at PORT:${PORT}`); 
 })
