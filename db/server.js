@@ -9,11 +9,12 @@ const server = async () => {
   //         throw new Error("Cant connect to the database");
   //     }
   // }
+  // apirestblog-production-3622.up.railway.app:27017/
 
   try {
     dotenv.config();
     const { DB_USER, DB_PASS, DB_NAME } = process.env;
-    const API_URL = `mongodb://${DB_USER}:${DB_PASS}apirestblog-production-3622.up.railway.app:27017/${DB_NAME}`;
+    const API_URL = `mongodb://${DB_USER}:${DB_PASS}mongodb://mongo:yXTFPqPUvuDBJRQrJSOtrnbMlCebenyy@roundhouse.proxy.rlwy.net:27861${DB_NAME}`;
 
     await mongoose.set(API_URL, "useNewUrlParser", true , "useFindAndModify", false);
     console.log("Welcome to the database, have fun!");
