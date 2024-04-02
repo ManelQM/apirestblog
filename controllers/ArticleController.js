@@ -68,7 +68,7 @@ const getAllArticles = async (req, res) => {
         message: "Can't find articles",
       });
     }
-
+console.log("ALL ARTICLES => ",allArticles)
     return res.status(200).json({
       status: "success",
       articles: allArticles,
